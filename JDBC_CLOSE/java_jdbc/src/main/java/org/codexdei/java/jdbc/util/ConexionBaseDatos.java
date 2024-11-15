@@ -13,11 +13,7 @@ public class ConexionBaseDatos {
 
     public static Connection getConnection() throws SQLException {
 
-        if (connection == null){
-
-            connection = DriverManager.getConnection(url,user,password);
-        }
-        return connection;
+        return connection = DriverManager.getConnection(url,user,password);
     }
 
 }

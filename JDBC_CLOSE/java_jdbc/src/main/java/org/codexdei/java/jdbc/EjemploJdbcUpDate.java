@@ -12,7 +12,6 @@ import java.sql.SQLException;
 public class EjemploJdbcUpDate {
 
     public static void main(String[] args) {
-        try (Connection conn = ConexionBaseDatos.getConnection()) {
 
             Repositorio<Producto> repositorio = new ProductoRepositorioImpl();
             System.out.println("============= listar =============");
@@ -29,12 +28,8 @@ public class EjemploJdbcUpDate {
             Categoria categoria = new Categoria();
             categoria.setIdCategoria(2L);
             producto.setCategoria(categoria);
-            repositorio.guardar(producto);
-            System.out.println("Producto editado con éxito");
+//            repositorio.guardar(producto);
+//            System.out.println("Producto editado con éxito");
             repositorio.listar().forEach(System.out::println);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

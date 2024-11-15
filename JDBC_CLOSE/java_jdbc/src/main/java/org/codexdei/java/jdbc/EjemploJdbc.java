@@ -12,7 +12,6 @@ import java.util.Date;
 public class EjemploJdbc {
 
     public static void main(String[] args) {
-        try (Connection conn = ConexionBaseDatos.getConnection()) {
 
             Repositorio<Producto> repositorio = new ProductoRepositorioImpl();
             System.out.println("============= listar =============");
@@ -23,18 +22,15 @@ public class EjemploJdbc {
 
             System.out.println("============= insertar nuevo producto =============");
             Producto producto = new Producto();
-            producto.setNombre("ASUS");
-            producto.setPrecio(1000);
+            producto.setNombre("Bate de beisbol");
+            producto.setPrecio(10);
             producto.setFechaRegistro(new Date());
             Categoria categoria = new Categoria();
-            categoria.setIdCategoria(3L);
+            categoria.setIdCategoria(1L);
             producto.setCategoria(categoria);
             repositorio.guardar(producto);
             System.out.println("Producto guardado con éxito");
             repositorio.listar().forEach(System.out::println);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

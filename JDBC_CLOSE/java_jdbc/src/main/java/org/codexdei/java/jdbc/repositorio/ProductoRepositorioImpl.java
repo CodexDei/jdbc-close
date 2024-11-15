@@ -21,7 +21,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
 
         List<Producto> productos = new ArrayList<>();
 
-        try(Statement stmt = getInstance().createStatement();
+        try(Connection cnn = getInstance();
+            Statement stmt = cnn.createStatement();
             ResultSet rs = stmt.executeQuery(
             "SELECT p.*, c.nombre_categoria as categoria FROM productos as p " +
                 "INNER JOIN categorias as c ON (p.categoria_id = c.idcategorias)")){
@@ -47,9 +48,10 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
 
         Producto producto = null;
 
-        try(PreparedStatement psts = getInstance().
-            prepareStatement("SELECT p.*, c.nombre_categoria as categoria FROM productos as p " +
-                                 "INNER JOIN categorias as c ON (p.categoria_id = c.idcategorias) WHERE idproductos = ?")
+        try(Connection cnn = getInstance();
+            PreparedStatement psts = cnn.prepareStatement(
+            "SELECT p.*, c.nombre_categoria as categoria FROM productos as p " +
+                "INNER JOIN categorias as c ON (p.categoria_id = c.idcategorias) WHERE idproductos = ?")
             ){
 
             psts.setLong(1,id);
@@ -78,7 +80,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
         } else {
             sql = "INSERT INTO productos(nombre, precio, categoria_id, fecha_registro) VALUES(?,?,?,?)";
         }
-        try (PreparedStatement stmt = getInstance().prepareStatement(sql)) {
+       try (Connection cnn = getInstance();
+            PreparedStatement stmt = cnn.prepareStatement(sql)) {
             stmt.setString(1, producto.getNombre());
             stmt.setLong(2, producto.getPrecio());
             stmt.setLong(3,producto.getCategoria().getIdCategoria());
@@ -99,7 +102,8 @@ public class ProductoRepositorioImpl implements Repositorio<Producto>{
     @Override
     public void eliminar(Long id) {
 
-        try (PreparedStatement stmt = getInstance().prepareStatement("DELETE FROM productos WHERE idproductos=?")) {
+       try (Connection cnn = getInstance();
+            PreparedStatement stmt = cnn.prepareStatement("DELETE FROM productos WHERE idproductos=?")) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException throwables) {
